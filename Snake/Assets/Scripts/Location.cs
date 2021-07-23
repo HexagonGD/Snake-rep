@@ -8,6 +8,12 @@ namespace Snake.Maps
         [SerializeField] private List<Renderer> _firstPeopleGroup;
         [SerializeField] private List<Renderer> _secondPeopleGroup;
 
+        private void Start()
+        {
+            SetColorFirstGroup(Color.red);
+            SetColorSecondGroup(Color.blue);
+        }
+
         public void SetColorFirstGroup(Color color)
         {
             SetColorGroup(_firstPeopleGroup, color);

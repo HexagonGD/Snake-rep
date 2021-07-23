@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Snake.Collections;
 using Snake.Global;
+using Snake.Factories;
 
 namespace Snake.Maps
 {
@@ -10,11 +11,11 @@ namespace Snake.Maps
         private Factory _factory;
         private LimitedQueue _locations;
 
-        private float _time;
-        private float _lengthLocation;
+        private float _time = 10f;
+        private float _lengthLocation = 20f;
         private int _countCreateLocations;
 
-        public Mapper(Action callback, int maxLocation)
+        public Mapper(ref Action callback, int maxLocation)
         {
             _factory = General.Instance.GameResources.Factory;
             _locations = new LimitedQueue(maxLocation);
@@ -24,9 +25,9 @@ namespace Snake.Maps
         private void OnUpdate()
         {
             _time += Time.deltaTime;
-            if (_time >= _lengthLocation)
+            if (_time >= _lengthLocation / GlobalParams.SnakeSpeed)
             {
-                _time -= _lengthLocation;
+                _time -= _lengthLocation / GlobalParams.SnakeSpeed;
                 CreateLocation();
             }
         }
@@ -35,7 +36,7 @@ namespace Snake.Maps
         {
             _countCreateLocations++;
             var location = _factory.CreateRandom();
-            location.transform.position = Vector3.forward * _countCreateLocations;
+            location.transform.position = Vector3.forward * _countCreateLocations * _lengthLocation;
             _locations.Enqueue(location);
         }
     }

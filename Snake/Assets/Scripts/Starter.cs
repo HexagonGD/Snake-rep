@@ -8,6 +8,9 @@ namespace Snake.Managers
     {
         private event Action OnUpdate;
 
+        private Mapper _mapper;
+        private Player _player;
+
         void Start()
         {
             StartGame();
@@ -15,13 +18,14 @@ namespace Snake.Managers
 
         void Update()
         {
-            OnUpdate.Invoke();
+            OnUpdate?.Invoke();
         }
 
         public void StartGame()
         {
             OnUpdate = null;
-            var mapper = new Mapper(OnUpdate, 5);
+            _mapper = new Mapper(ref OnUpdate, 5);
+            _player = new Player(ref OnUpdate);
         }
     }
 }

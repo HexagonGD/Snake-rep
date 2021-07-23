@@ -2,17 +2,21 @@ using Snake.Maps;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Factory : ScriptableObject
+namespace Snake.Factories
 {
-    [SerializeField] private List<Location> _locationPrefabs;
-
-    public Location Create(int index)
+    [CreateAssetMenu(menuName = "Snake/Factory", fileName = "Factory")]
+    public class Factory : ScriptableObject
     {
-        return Instantiate(_locationPrefabs[index]);
-    }
+        [SerializeField] private List<Location> _locationPrefabs;
 
-    public Location CreateRandom()
-    {
-        return Create(Random.Range(0, _locationPrefabs.Count));
+        public Location Create(int index)
+        {
+            return Instantiate(_locationPrefabs[index]);
+        }
+
+        public Location CreateRandom()
+        {
+            return Create(Random.Range(0, _locationPrefabs.Count));
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace Snake.Collections
 {
     public class LimitedQueue
     {
-        private Queue<Location> _locations;
+        private Queue<Location> _locations = new Queue<Location>();
 
         private readonly int _maxCount;
         private int _count;
