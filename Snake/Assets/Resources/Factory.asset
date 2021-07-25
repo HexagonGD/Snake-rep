@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6c461090b460943987d183da67be1a, type: 3}
   m_Name: Factory
   m_EditorClassIdentifier: 
-  _locationPrefabs:
-  - {fileID: 759360954452780528, guid: d4e0060670299a1499fda924ae416db4, type: 3}
+  _locationPrefabs: {fileID: 11400000, guid: f9dcf84ca270496479ebdf34a9e4fe04, type: 2}
