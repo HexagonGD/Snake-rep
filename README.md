@@ -5,5 +5,5 @@
 
 Blender - 10 минут
 UML - 30 минут
-Scripting - 280 минут 20:39
+Scripting - 310 минут
 Unity - 52 минут

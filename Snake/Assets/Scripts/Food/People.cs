@@ -9,11 +9,7 @@ namespace Snake.Foods
 
         public void Collect(Head head)
         {
-            var color = _renderer.material.color;
-            if (head.MainColor == color)
-                head.Eat();
-            else
-                head.Dead();
+            head.CollectMan(_renderer.material.color);
             Destroy(gameObject);
         }
 

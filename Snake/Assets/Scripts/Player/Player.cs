@@ -16,15 +16,9 @@ namespace Snake.Players
 
         private void OnUpdate()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                RaycastHit hit;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit))
-                {
-                    _head.Move(hit.point.x);
-                }
-            }
+            var position = Input.mousePosition;
+            position.z = 15f;
+            _head.Move(Camera.main.ScreenToWorldPoint(position).x);
         }
     }
 }

@@ -1,5 +1,6 @@
 using Snake.Foods;
 using Snake.Global;
+using Snake.Players.States;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,48 +12,49 @@ namespace Snake.Players
         [SerializeField] private GameObject _bodyPrefab;
         private List<Transform> _bodies = new List<Transform>();
         private Transform _transform;
+        private ISnakeState _state;
+
+        [Header("Show")]
         [SerializeField] private Renderer _renderer;
         [SerializeField] private Material _mainColor;
         [SerializeField] private Material _secondColor;
 
-        private float _speed;
-        private float _positionX;
-        [SerializeField] private int _maxSegments = 20;
-        [SerializeField] private int _startSegments = 3;
-        private int _countCollectCrystal;
+        [Header("CountSegments")]
+        [SerializeField] private int _maxSegments;
+        [SerializeField] private int _startSegments;
 
         public Color MainColor => _mainColor.color;
 
         private void Start()
         {
+            SetState(new RunState(this));
             _transform = transform;
-            _speed = GlobalParams.SnakeSpeed;
             _bodies.Add(transform);
             for (var i = 0; i < _startSegments; i++) Eat();
         }
 
         private void Update()
         {
-            var position = _transform.position;
-            position.x = position.x > _positionX ?
-                Mathf.Max(_positionX, position.x - _speed * Time.deltaTime) :
-                Mathf.Min(_positionX, position.x + _speed * Time.deltaTime);
-            position.z += _speed * Time.deltaTime;
-            _transform.position = position;
+            _state.OnUpdate();
 
+            Vector3 position;
             for (var i = 1; i < _bodies.Count; i++)
             {
                 position = _bodies[i].position;
-                position.z += _speed * Time.deltaTime;
-                position.x = Mathf.Lerp(position.x, _bodies[i - 1].position.x, Time.deltaTime * 20f);
+                position.z += GlobalParams.SnakeSpeed * Time.deltaTime;
+                position.x = Mathf.Lerp(position.x, _bodies[i - 1].position.x, Time.deltaTime * 25f);
                 _bodies[i].position = position;
             }
         }
 
-        public void Move(float x)
+        public void SetState(ISnakeState state)
         {
-            _positionX = x;
+            _state?.End();
+            _state = state;
+            _state.Begin();
         }
+
+        public void Move(float x) => _state.OnMove(x);
 
         public void Eat()
         {
@@ -65,15 +67,13 @@ namespace Snake.Players
             RefreshPosition();
         }
 
-        public void CollectCrystal()
-        {
-            _countCollectCrystal++;
-        }
+        public void CollectCrystal() => _state.OnCollectCrystal();
 
-        public void Dead()
-        {
-            SceneManager.LoadScene("Game");
-        }
+        public void CollectMina() => _state.OnCollectMina();
+
+        public void CollectMan(Color color) => _state.OnCollectMan(color);
+
+        public void Dead() => SceneManager.LoadScene("Game");
 
         public void ChangeMainColor(Color color)
         {

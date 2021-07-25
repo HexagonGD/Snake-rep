@@ -7,7 +7,7 @@ namespace Snake.Foods
     {
         public void Collect(Head head)
         {
-            head.Dead();
+            head.CollectMina();
             Destroy(gameObject);
         }
     }
